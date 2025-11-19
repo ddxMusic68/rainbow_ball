@@ -1,16 +1,16 @@
-from physics_pygame import *
-from rbg import rgb_rainbow
+from utils.physics_ball import Ball, window_bounce
+from utils.rbg_rainbow import rgb_rainbow
+import pygame
 pygame.init()
 
 
-
 def mainloop():
-    ball1 = Ball(retention=1.01, friction=1, x_speed=-10, x_pos=1000-50)
+    ball1 = Ball(retention=1, friction=1, x_speed=-10, x_pos=1000-50, y_speed=20)
     # ball2 = Ball(retention=.99, friction=1, x_speed=20)
     WIDTH, HEIGHT = 1000, 600
     window = pygame.display.set_mode((WIDTH, HEIGHT))
 
-    GRAVITY = 0.3
+    GRAVITY = 0.5
     FPS = 60
 
     clock = pygame.time.Clock()
@@ -36,7 +36,7 @@ def mainloop():
         # window.fill('black')
         
         for ball in Ball.ball_list:
-            ball_bounce(ball, WIDTH, HEIGHT)
+            window_bounce(ball, WIDTH, HEIGHT)
             if ball.radius >= HEIGHT//2 and grow:
                 grow = False
             elif ball.radius < 5 and not grow:
@@ -47,6 +47,7 @@ def mainloop():
                 ball.radius -= 0.02
             ball.color = color
             ball.update_gravity(GRAVITY)
+            # ball.y_speed *= 1.00003
             ball.update_position()
             ball.collide_mouse(mouse_pos, left_click)
             ball.draw(window)
